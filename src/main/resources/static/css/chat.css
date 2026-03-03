@@ -490,6 +490,12 @@ html {
   color: var(--tg-button-color);
 }
 
+.emoji-btn.active {
+  color: var(--tg-button-color);
+  background: rgba(51, 144, 236, 0.1);
+  border-radius: 8px;
+}
+
 .message-input-container textarea {
   flex: 1;
   background: transparent;

@@ -1,5 +1,6 @@
 package com.web.chat.app.authentication.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.web.chat.app.authentication.chatuser.domain.ChatUserRole;
 
 import jakarta.persistence.EnumType;
@@ -60,6 +61,7 @@ public class ChatDto {
         return nickname;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

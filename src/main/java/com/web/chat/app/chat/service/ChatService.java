@@ -1,5 +1,6 @@
 package com.web.chat.app.chat.service;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -17,4 +18,8 @@ public interface ChatService {
     void removeUserAndBroadcast(String user);
 
     Set<String> getActiveUsers();
+
+    List<Message> getPrivateHistory(String user1, String user2);
+
+    List<Message> loadHistory(int pageSize);
 }

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/css/default.css" />
     <link rel="stylesheet" href="/css/chat.css" />
     <link rel="stylesheet" href="/css/style-scrollbar.css" />
+    <link rel="stylesheet" href="/css/emoji.css" />
     <link type="text/css" rel="stylesheet" href="/css/notifications.css" />
     <link rel="icon" type="image/png" sizes="32x32" href="/img/public/favicon.ico">
 </head>
@@ -127,12 +128,34 @@
                 </div>
             </div>
 
-            <footer class="main-chat-footer">
+            <footer class="main-chat-footer" style="position: relative;">
+                <!-- Emoji Picker Panel -->
+                <div id="emoji-picker" class="emoji-picker-panel">
+                    <div class="emoji-search-bar">
+                        <i class="fas fa-search emoji-search-icon"></i>
+                        <input type="text" id="emoji-search-input" placeholder="Search emoji..." autocomplete="off">
+                    </div>
+                    <div class="emoji-category-tabs" id="emoji-category-tabs"></div>
+                    <div class="emoji-picker-divider"></div>
+                    <div class="emoji-grid-container">
+                        <div class="emoji-category-label" id="emoji-category-label">Smileys &amp; Emotion</div>
+                        <div class="emoji-grid" id="emoji-grid"></div>
+                    </div>
+                </div>
+
+                <!-- Hidden file input for attachments -->
+                <input type="file" id="file-input" hidden
+                    accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.zip,.txt">
+
                 <form id="message-controls" name="message-controls" class="message-input-form">
                     <div class="message-input-container">
-                        <button type="button" class="icon-btn attachment-btn"><i class="fas fa-paperclip"></i></button>
-                        <textarea id="message" placeholder="Write a message..." required rows="1"></textarea>
-                        <button type="button" class="icon-btn emoji-btn"><i class="far fa-smile"></i></button>
+                        <button type="button" class="icon-btn attachment-btn" id="attach-btn" title="Attach file">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <textarea id="message" placeholder="Write a message... (😊 click emoji to add)" required
+                            rows="1"></textarea>
+                        <button type="button" class="icon-btn emoji-btn" id="emoji-toggle-btn" title="Emoji"><i
+                                class="far fa-smile"></i></button>
                     </div>
                     <button class="send-message-btn" type="submit">
                         <i class="fas fa-paper-plane"></i>

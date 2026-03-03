@@ -8,31 +8,31 @@ let connection;
 
 let menuToggler = true;
 
-$(".button-show-hide").click(function (){
+$(".button-show-hide").click(function () {
 
     if (menuToggler) {
         $(this).html("&#128314;");
-        $(".chats-list-controls").css({maxHeight: 0+"px", height: 0 + "px", padding: "25px 10px"})
+        $(".chats-list-controls").css({ maxHeight: 0 + "px", height: 0 + "px", padding: "25px 10px" })
         //.children('.contact-connections-container').hide(1000);*/
         menuToggler = false;
     } else {
         $(this).html("&#10060;");
-        $(".chats-list-controls").css({maxHeight: 160+"px", height: 160 + "px", padding: "10px 10px"})
-/*
-        $(".chats-list-controls")
-            .animate({
-                maxHeight: 160,
-                height: 160,
-                //padding: "10px 10px"
-            }, 300)
-            //.children('.contact-connections-container').show(1000);*/
+        $(".chats-list-controls").css({ maxHeight: 160 + "px", height: 160 + "px", padding: "10px 10px" })
+        /*
+                $(".chats-list-controls")
+                    .animate({
+                        maxHeight: 160,
+                        height: 160,
+                        //padding: "10px 10px"
+                    }, 300)
+                    //.children('.contact-connections-container').show(1000);*/
         menuToggler = true;
     }
 });
 
 async function GetUserInfo() {
     let url = '/api/user/';
-    let res = await fetch(url, {method: 'GET'});
+    let res = await fetch(url, { method: 'GET' });
 
     if (res.ok) {
         return res.json();
@@ -46,7 +46,7 @@ GetUserInfo().then(data => {
     fillUserInformation();
 });
 
-function fillUserInformation(){
+function fillUserInformation() {
     $('#user-name').html(chatUser.name);
     $('#user-name-header').html(chatUser.name);
     $('#user-email').html(chatUser.email);
@@ -66,7 +66,7 @@ async function handleSetUserNickname(event) {
 
 }
 
-async function doChangeNicknameRequest(url, prevNickname, nickname){
+async function doChangeNicknameRequest(url, prevNickname, nickname) {
     let notification;
     chatUser.nickname = nickname;
 
@@ -98,18 +98,18 @@ async function doChangeNicknameRequest(url, prevNickname, nickname){
     }
 }
 
-function updateChatUser(data){
+function updateChatUser(data) {
     chatUser = {
-        name: data.firstname +" "+ data.lastname,
+        name: data.firstname + " " + data.lastname,
         nickname: data.nickname,
         email: data.email
     }
 }
 
-function showInfoDetails(event){
+function showInfoDetails(event) {
     event.preventDefault()
     isActive = !isActive;
-    $(".information-details-container").toggleClass( 'hide', isActive );
+    $(".information-details-container").toggleClass('hide', isActive);
 }
 
 
@@ -136,9 +136,9 @@ const disconnect = (event) => {
 const onConnected = () => {
     stompClient.subscribe('/topic/public', onMessageReceived);
     stompClient.send(
-        "/app/new-user",
+        "/app/new-User",  // must match backend @MessageMapping("/new-User")
         {},
-        JSON.stringify({from: user, type: 'CONNECT'})
+        JSON.stringify({ from: user, type: 'CONNECT' })
     )
 }
 
@@ -223,7 +223,7 @@ const onMessageReceived = (payload) => {
     chat.appendChild(messageCard)
 
     //scroll to bottom
-    $("#chat-body").animate({ scrollTop: $('#chat-body').prop("scrollHeight")}, 1000);
+    $("#chat-body").animate({ scrollTop: $('#chat-body').prop("scrollHeight") }, 1000);
 }
 
 const onError = (error) => {
