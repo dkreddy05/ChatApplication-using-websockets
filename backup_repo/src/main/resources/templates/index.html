@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta property="og:title" content="ChatMate">
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/img/public/cm.png">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="/css/default.css" />
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/public/favicon.ico">
+    <title>ChatMate - Connect Instantly</title>
+</head>
+
+<body>
+
+    <header
+        style="padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(11, 15, 25, 0.8); backdrop-filter: blur(10px); position: sticky; top:0; z-index: 1000; border-bottom: 1px solid var(--panel-border);">
+        <div class="header-tab logo-tab"><img src="/img/public/cm.png" alt="ChatMate logo" style="height: 48px;"></div>
+        <div class="header-tab login-tab" style="display: flex; gap: 1.5rem; align-items: center;">
+            <a class="scrollClass" href="#about">Features</a>
+            <a href="https://github.com/ArturShatailo/chat-with-registration-spring-boot-websocket"
+                target="_blank">GitHub</a>
+            <a href="/login" class="button" style="padding: 0.5rem 1.5rem; font-size: 0.95rem;">Login</a>
+            <a href="/register" class="button-light" style="padding: 0.5rem 1.5rem; font-size: 0.95rem;">Sign Up</a>
+        </div>
+    </header>
+    <main>
+
+        <div class="main-banner">
+            <div class="banner-element banner-title">
+                <h1>Where Conversations<br />Come Alive</h1>
+            </div>
+            <div class="banner-element banner-text">
+                <h4>Experience the fastest, most beautiful way to connect with your friends.</h4>
+            </div>
+            <div class="banner-element banner-button">
+                <a class="button-light" href="/dashboard">Launch ChatApp</a>
+            </div>
+        </div>
+
+        <div id="about" class="about">
+            <div class="about-component about-blocks">
+                <div class="about-info-card">
+                    <div class="info-card-img info-img-1" style="font-size: 3rem; margin-bottom: 1rem;">🔒</div>
+                    <p class="info-card-title">Secure & Private</p>
+                    <p class="into-card-description">Your data is encrypted and securely stored. We value your privacy
+                        above all else.</p>
+                </div>
+                <div class="about-info-card">
+                    <div class="info-card-img info-img-2" style="font-size: 3rem; margin-bottom: 1rem;">⚡</div>
+                    <p class="info-card-title">Lightning Fast</p>
+                    <p class="into-card-description">Powered by WebSockets and STOMP, messages are delivered instantly
+                        with zero delay.</p>
+                </div>
+                <div class="about-info-card">
+                    <div class="info-card-img info-img-3" style="font-size: 3rem; margin-bottom: 1rem;">✨</div>
+                    <p class="info-card-title">Stunning Design</p>
+                    <p class="into-card-description">Immersive glassmorphism interface ensures an elegant and satisfying
+                        user experience.</p>
+                </div>
+            </div>
+
+            <div class="about-component overview-block">
+                <div class="overview-text-wrapper">
+                    <h2>Built with the Best Tech</h2>
+                    <p>ChatMate leverages the robust Spring Boot framework alongside PostgreSQL and WebSockets to
+                        provide a scalable, real-time messaging environment. Sign up, confirm your email, and dive
+                        straight into seamless conversations.</p>
+                </div>
+                <div class="overview-links">
+                    <a href="/register" class="button-light">Get Started Today</a>
+                    <a href="https://github.com/ArturShatailo/chat-with-registration-spring-boot-websocket"
+                        class="button" target="_blank"
+                        style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">View
+                        Source</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="copyright">
+            <p>&copy; 2024 ChatMate. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('.scrollClass').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
