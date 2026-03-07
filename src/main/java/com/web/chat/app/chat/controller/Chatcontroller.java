@@ -61,6 +61,11 @@ public class Chatcontroller {
         chatService.sendPrivateMessage(message);
     }
 
+    @MessageMapping("/message-status")
+    public void updateMessageStatus(@Payload com.web.chat.app.chat.domain.MessageStatusUpdate update) {
+        chatService.updateMessageStatus(update);
+    }
+
     @GetMapping("/api/chat/history")
     @ResponseBody
     public ResponseEntity<List<Message>> getPrivateHistory(

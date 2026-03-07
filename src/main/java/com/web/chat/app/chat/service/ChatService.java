@@ -22,4 +22,8 @@ public interface ChatService {
     List<Message> getPrivateHistory(String user1, String user2);
 
     List<Message> loadHistory(int pageSize);
+
+    void updateMessageStatus(com.web.chat.app.chat.domain.MessageStatusUpdate update);
+
+    void isTyping(com.web.chat.app.chat.domain.TypingStatus typingStatus);
 }

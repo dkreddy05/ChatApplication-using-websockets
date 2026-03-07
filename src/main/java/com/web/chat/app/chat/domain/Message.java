@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @Data
 @Builder
 @Entity
@@ -28,6 +29,9 @@ public class Message {
 
     @Enumerated(EnumType.STRING)
     private MessageType type;
+
+    @Enumerated(EnumType.STRING)
+    private MessageStatus status = MessageStatus.SENT;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime timeStamp;

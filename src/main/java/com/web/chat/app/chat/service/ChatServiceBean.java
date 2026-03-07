@@ -114,4 +114,25 @@ public class ChatServiceBean implements ChatService {
         return history;
     }
 
+    @Override
+    public void updateMessageStatus(com.web.chat.app.chat.domain.MessageStatusUpdate update) {
+        messageRepository.findById(update.getId()).ifPresent(message -> {
+            message.setStatus(update.getStatus());
+            messageRepository.save(message);
+            ChatUser originalSender = chatUserInfoService.getDetailsByNickname(message.getSender());
+            if (originalSender != null) {
+                messagingTemplate.convertAndSendToUser(
+                        originalSender.getEmail(),
+                        "/queue/status-updates",
+                        update);
+                log.debug("Pushed status update {} for msg {} to {}", update.getStatus(), message.getId(),
+                        message.getSender());
+            }
+        });
+    }
+
+    @Override
+    public void isTyping(com.web.chat.app.chat.domain.TypingStatus typingStatus) {
+        messagingTemplate.convertAndSend("/topic/public", typingStatus);
+    }
 }
