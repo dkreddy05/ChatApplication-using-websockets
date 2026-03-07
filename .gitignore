@@ -3,6 +3,9 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+id_ed25519
+id_ed25519.pub
+app.jar
 
 ### STS ###
 .apt_generated

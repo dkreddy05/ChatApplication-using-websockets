@@ -21,12 +21,6 @@ public class FileUploadController {
 
     private final FileStorageService fileStorageService;
 
-    /**
-     * POST /api/upload
-     * Accepts a multipart file, stores it, and returns JSON with the public URL and
-     * metadata.
-     * Requires the user to be authenticated (handled by Spring Security).
-     */
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) {
         try {
