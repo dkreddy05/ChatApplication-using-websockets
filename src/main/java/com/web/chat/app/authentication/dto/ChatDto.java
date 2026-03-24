@@ -13,6 +13,7 @@ public class ChatDto {
     private String nickname;
     private String email;
     private String password;
+    private String profilePictureUrl;
     @Enumerated(EnumType.STRING)
     private ChatUserRole role;
     private Boolean locked = false;
@@ -104,5 +105,13 @@ public class ChatDto {
 
     public void setRole(ChatUserRole role) {
         this.role = role;
+    }
+
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
+    }
+
+    public void setProfilePictureUrl(String profilePictureUrl) {
+        this.profilePictureUrl = profilePictureUrl;
     }
 }

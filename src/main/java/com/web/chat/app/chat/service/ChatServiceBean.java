@@ -1,8 +1,8 @@
 package com.web.chat.app.chat.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import com.web.chat.app.authentication.chatuser.domain.ChatUser;
 import com.web.chat.app.authentication.chatuser.service.ChatUserInfoService;
 import com.web.chat.app.chat.domain.Message;
+import com.web.chat.app.chat.repository.MessageRepository;
+import com.web.chat.app.chat.domain.MessageStatus;
 import com.web.chat.app.chat.domain.MessageType;
 
 import lombok.AllArgsConstructor;
@@ -30,19 +32,23 @@ public class ChatServiceBean implements ChatService {
     private final MessageRepository messageRepository;
     private final ChatUserInfoService chatUserInfoService;
 
-    private final Set<String> activeUsers = ConcurrentHashMap.newKeySet();
+    private final Map<String, String> sessionUserMap = new ConcurrentHashMap<>();
+    private final Map<String, Integer> userSessionCount = new ConcurrentHashMap<>();
 
     @Override
     public Set<String> getActiveUsers() {
-        return activeUsers;
+        return userSessionCount.keySet();
     }
 
     @Override
     public Message sendPublicMessage(Message message) {
         log.info("Public message from {}: {}", message.getSender(), message.getContent());
         message.setType(MessageType.CHAT);
-        messageRepository.save(message);
-        return message;
+        if (message.getStatus() == null) {
+            message.setStatus(MessageStatus.SENT);
+        }
+        Message saved = messageRepository.save(message);
+        return saved;
     }
 
     @Override
@@ -85,33 +91,43 @@ public class ChatServiceBean implements ChatService {
             log.warn("newUser called with null/empty sender — ignoring. Message: {}", message);
             return message;
         }
+        String sessionId = simpMessageHeaderAccessor.getSessionId();
         simpMessageHeaderAccessor.getSessionAttributes().put("user", sender);
-        activeUsers.add(sender);
+        sessionUserMap.put(sessionId, sender);
+        userSessionCount.put(sender, userSessionCount.getOrDefault(sender, 0) + 1);
+
         broadcastActiveUsers();
-        log.info("New user joined: {}", sender);
+        log.info("New user joined: {} (sessionId: {})", sender, sessionId);
         return message;
     }
 
     @Override
-    public void removeUserAndBroadcast(String user) {
-        if (user != null) {
-            activeUsers.remove(user);
-            broadcastActiveUsers();
-            log.info("User disconnected: {}", user);
+    public void removeUserAndBroadcast(String sessionId) {
+        if (sessionId != null) {
+            String user = sessionUserMap.remove(sessionId);
+            if (user != null) {
+                int count = userSessionCount.getOrDefault(user, 1) - 1;
+                if (count <= 0) {
+                    userSessionCount.remove(user);
+                    broadcastActiveUsers();
+                    log.info("User {} fully disconnected", user);
+                } else {
+                    userSessionCount.put(user, count);
+                    log.info("User {} disconnected ({} sessions remaining)", user, count);
+                }
+            }
         }
     }
 
     private void broadcastActiveUsers() {
-        messagingTemplate.convertAndSend("/topic/active-users", activeUsers);
+        messagingTemplate.convertAndSend("/topic/active-users", getActiveUsers());
     }
 
     @Override
     public List<Message> loadHistory(int pageSize) {
         Pageable pageable = PageRequest.of(0, pageSize);
-        Slice<Message> slice = messageRepository.findAllByOrderByTimeStampDesc(pageable);
-        List<Message> history = new ArrayList<>(slice.getContent());
-        Collections.reverse(history);
-        return history;
+        Slice<Message> slice = messageRepository.findGroupMessages(pageable);
+        return new ArrayList<>(slice.getContent());
     }
 
     @Override

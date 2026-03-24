@@ -1,6 +1,5 @@
 package com.web.chat.app.chat.controller;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
@@ -25,16 +24,6 @@ public class Chatcontroller {
     @Autowired
     public Chatcontroller(ChatService chatService) {
         this.chatService = chatService;
-    }
-
-    @GetMapping("/")
-    public String getRoot(Principal principal) {
-        return (principal != null) ? "redirect:/dashboard" : "redirect:/login";
-    }
-
-    @GetMapping("/dashboard")
-    public String getDashBoard() {
-        return "dashboard";
     }
 
     @MessageMapping("/room-message")

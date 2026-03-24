@@ -4,8 +4,15 @@ import react from '@vitejs/plugin-react';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    react(), // React plugin, no need for babel-plugin-react-compiler
+    react(),
   ],
+  define: {
+    global: 'window',
+  },
+  build: {
+    outDir: '../src/main/resources/static',
+    emptyOutDir: true,
+  },
   server: {
     port: 5173, // optional, explicitly set frontend port
     proxy: {
@@ -14,18 +21,34 @@ export default defineConfig({
         target: 'http://localhost:8080',
         changeOrigin: true,
       },
-      '/login': {
+      '/logout': {
         target: 'http://localhost:8080',
         changeOrigin: true,
       },
-      // WebSocket endpoints
+      '/css': {
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: true,
+      },
+      '/js': {
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: true,
+      },
+      '/img': {
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: true,
+      },
+      '/uploads': {
+        target: 'http://127.0.0.1:8080',
+        changeOrigin: true,
+      },
       '/ws': {
-        target: 'ws://localhost:8080',
+        target: 'http://localhost:8080',
         ws: true,
         changeOrigin: true,
       },
       '/chat': {
-        target: 'ws://localhost:8080',
+        // SockJS uses both HTTP (xhr_*) and WS upgrade under this path
+        target: 'http://localhost:8080',
         ws: true,
         changeOrigin: true,
       },

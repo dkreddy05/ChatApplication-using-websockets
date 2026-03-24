@@ -1,6 +1,6 @@
 package com.web.chat.app.chat.domain;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -33,8 +33,9 @@ public class Message {
     @Enumerated(EnumType.STRING)
     private MessageStatus status = MessageStatus.SENT;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime timeStamp;
+    // Accept ISO-8601 timestamps including a trailing 'Z' (e.g. 2026-03-15T10:11:00.947Z)
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private Instant timeStamp;
 
     @Column(columnDefinition = "TEXT")
     @JsonAlias("message")
@@ -53,7 +54,7 @@ public class Message {
     @PrePersist
     public void prePersist() {
         if (this.timeStamp == null) {
-            this.timeStamp = LocalDateTime.now();
+            this.timeStamp = Instant.now();
         }
     }
 }

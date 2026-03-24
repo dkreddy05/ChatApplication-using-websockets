@@ -52,4 +52,17 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/profile-picture")
+    public ResponseEntity<?> updateProfilePicture(Principal principal, @RequestBody ChatDto chatDto) {
+        if (principal == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        try {
+            chatUserUpdateService.updateChatUserProfilePicture(principal.getName(), chatDto.getProfilePictureUrl());
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

@@ -95,6 +95,14 @@ public class ChatUserServiceBean
     chatuserrepo.save(chatUser);
   }
 
+  @Transactional
+  @Override
+  public void updateChatUserProfilePicture(String email, String profilePictureUrl) {
+    ChatUser chatUser = getUserDetails(email);
+    chatUser.setProfilePictureUrl(profilePictureUrl);
+    chatuserrepo.save(chatUser);
+  }
+
   @Override
   public List<ChatDto> searchUsersByNickname(String query) {
     List<ChatUser> users = chatuserrepo.findByNicknameContainingIgnoreCase(query);

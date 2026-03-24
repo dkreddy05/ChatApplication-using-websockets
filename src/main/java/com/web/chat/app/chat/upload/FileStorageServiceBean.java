@@ -7,12 +7,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Set;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,18 +18,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FileStorageServiceBean implements FileStorageService {
 
-    private static final long MAX_BYTES = 50L * 1024 * 1024; // 50 MB
+    private static final long MAX_BYTES = 50L * 1024 * 1024;
 
     private static final Set<String> ALLOWED_MIME_PREFIXES = Set.of(
-            "image/", "video/", "audio/");
+            "image/", "video/", "audio/", "text/");
     private static final Set<String> ALLOWED_MIME_TYPES = Set.of(
-            "application/pdf",
-            "application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "application/vnd.ms-excel",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            "application/zip",
-            "text/plain");
+            ".jpg", ".jpeg", ".png", ".gif",
+            ".mp4", ".mp3", ".wav",
+            ".pdf", ".doc", ".docx", ".xls", ".xlsx",
+            ".zip", ".txt", ".csv");
 
     @Value("${app.upload.dir:./uploads}")
     private String uploadDir;
@@ -57,25 +52,19 @@ public class FileStorageServiceBean implements FileStorageService {
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("Cannot store an empty file.");
         }
-
-        // Size check
         if (file.getSize() > MAX_BYTES) {
             throw new IllegalArgumentException("File exceeds the 50 MB limit.");
         }
-
-        // MIME type check
         String contentType = file.getContentType();
         if (!isAllowedMimeType(contentType)) {
             throw new IllegalArgumentException("File type not allowed: " + contentType);
         }
-
-        // Build safe filename
         String originalName = StringUtils.cleanPath(
                 file.getOriginalFilename() != null ? file.getOriginalFilename() : "upload");
         String extension = "";
         int dotIdx = originalName.lastIndexOf('.');
         if (dotIdx >= 0) {
-            extension = originalName.substring(dotIdx); // e.g. ".jpg"
+            extension = originalName.substring(dotIdx);
         }
         String storedName = UUID.randomUUID() + extension;
 

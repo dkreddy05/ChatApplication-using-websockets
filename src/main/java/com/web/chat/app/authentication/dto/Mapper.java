@@ -8,26 +8,28 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.stream.Collectors;
+
 @Service
 public class Mapper {
 
     public ChatUser toEntity(ChatDto chatDto) {
-    ChatUser user = new ChatUser(); 
-    
-    user.setFirstName(chatDto.getFirstName());
-    user.setLastName(chatDto.getLastName());
-    user.setNickname(chatDto.getNickname());
-    user.setEmail(chatDto.getEmail());
-    user.setPassword(chatDto.getPassword());
-    user.setRole(chatDto.getRole());
-    user.setEnabled(true);
-    user.setLocked(false);
-    
-    return user;
-}
+        ChatUser user = new ChatUser();
 
-    public ChatDto toDto(ChatUser chatUser){
-        return new ChatDto(
+        user.setFirstName(chatDto.getFirstName());
+        user.setLastName(chatDto.getLastName());
+        user.setNickname(chatDto.getNickname());
+        user.setEmail(chatDto.getEmail());
+        user.setPassword(chatDto.getPassword());
+        user.setRole(chatDto.getRole());
+        user.setEnabled(true);
+        user.setLocked(false);
+        user.setProfilePictureUrl(chatDto.getProfilePictureUrl());
+
+        return user;
+    }
+
+    public ChatDto toDto(ChatUser chatUser) {
+        ChatDto dto = new ChatDto(
                 chatUser.getEmail(),
                 chatUser.getEnabled(),
                 chatUser.getFirstName(),
@@ -35,21 +37,20 @@ public class Mapper {
                 chatUser.getLocked(),
                 chatUser.getNickname(),
                 chatUser.getPassword(),
-                chatUser.getRole()
-        );
+                chatUser.getRole());
+        dto.setProfilePictureUrl(chatUser.getProfilePictureUrl());
+        return dto;
     }
 
-
-
- public UserDetails toUserDetails(ChatUser chatUser) {
-    return User.builder()
-            .username(chatUser.getEmail())
-            .password(chatUser.getPassword())
-            .disabled(!chatUser.getEnabled())
-            .accountLocked(chatUser.getLocked())
-            .authorities(new SimpleGrantedAuthority(chatUser.getRole().name()))
-            .build();
-}
+    public UserDetails toUserDetails(ChatUser chatUser) {
+        return User.builder()
+                .username(chatUser.getEmail())
+                .password(chatUser.getPassword())
+                .disabled(!chatUser.getEnabled())
+                .accountLocked(chatUser.getLocked())
+                .authorities(new SimpleGrantedAuthority(chatUser.getRole().name()))
+                .build();
+    }
 
     public ChatUser toChatUser(UserDetails userDetails) {
 
@@ -63,7 +64,6 @@ public class Mapper {
                 .stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-
 
         return chatUser;
     }

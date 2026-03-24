@@ -29,12 +29,13 @@ public class WebSocketListener {
    public void handleWebSocketDisconnectListener(final SessionDisconnectEvent sessionDisconnectEvent) {
       final StompHeaderAccessor stompHeaderAccessor = StompHeaderAccessor.wrap(sessionDisconnectEvent.getMessage());
       final String user = (String) stompHeaderAccessor.getSessionAttributes().get("user");
+      final String sessionId = stompHeaderAccessor.getSessionId();
 
       if (user != null) {
          final Message message = Message.builder().type(MessageType.DISCONNECT).sender(user).build();
          log.info("Message: {}", message);
          simpMessageSendingOperations.convertAndSend("/topic/public", message);
-         chatService.removeUserAndBroadcast(user);
+         chatService.removeUserAndBroadcast(sessionId);
       }
    }
 }

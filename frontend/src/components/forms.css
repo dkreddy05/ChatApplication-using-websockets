@@ -1,0 +1,187 @@
+/* ===================================================
+   Telegram-style Auth Forms (Login & Register)
+   =================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --form-bg:       #17212b;
+  --form-panel:    #1e2c3a;
+  --form-border:   rgba(255,255,255,0.08);
+  --form-accent:   #8774e1;
+  --form-primary:  #3390ec;
+  --form-text:     #e8edf0;
+  --form-muted:    #7d9ab5;
+  --form-error-bg: rgba(229,57,53,0.12);
+  --form-error-br: rgba(229,57,53,0.3);
+  --form-error-tx: #ef9a9a;
+}
+
+*, ::before, ::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body, html {
+  font-family: 'Inter', sans-serif;
+  background: var(--form-bg);
+  color: var(--form-text);
+  min-height: 100vh;
+}
+
+/* Center card */
+.main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(135,116,225,0.12), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(51,144,236,0.09), transparent 40%),
+    var(--form-bg);
+}
+
+/* Logo / brand */
+.auth-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--form-accent), var(--form-primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 30px rgba(135,116,225,0.35);
+}
+
+.auth-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--form-text);
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.auth-subtitle {
+  font-size: 0.9rem;
+  color: var(--form-muted);
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+/* Card */
+.form, fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.form {
+  background: var(--form-panel);
+  border: 1px solid var(--form-border);
+  border-radius: 16px;
+  padding: 28px 28px 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+/* Floating-label input groups */
+.form-group.field {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-field {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid var(--form-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  color: var(--form-text);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.form-field::placeholder { color: var(--form-muted); }
+
+.form-field:focus {
+  border-color: var(--form-accent);
+  background: rgba(135,116,225,0.06);
+}
+
+/* Actions */
+.form-actions {
+  margin-top: 24px;
+}
+
+.button {
+  width: 100%;
+  background: var(--form-accent);
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(135,116,225,0.35);
+}
+
+.button:hover:not(:disabled) {
+  background: #7b69d0;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(135,116,225,0.5);
+}
+
+.button:active { transform: translateY(0); }
+
+.button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Error / success alerts */
+.alert {
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.alert p { margin: 0; }
+
+.alert-error {
+  background: var(--form-error-bg);
+  border: 1px solid var(--form-error-br);
+  color: var(--form-error-tx);
+}
+
+.alert-success {
+  background: rgba(49,196,141,0.12);
+  border: 1px solid rgba(49,196,141,0.3);
+  color: #a5d6a7;
+}
+
+/* Link row */
+.form-link {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.88rem;
+  color: var(--form-muted);
+}
+
+.form-link a {
+  color: var(--form-accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.form-link a:hover { color: var(--form-primary); }
